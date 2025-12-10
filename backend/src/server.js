@@ -12,10 +12,10 @@ app.get("/api/health", (req,res) => {
 
 //make our app ready for deployment
 if(ENV.NODE_ENV === "development"){
-    app.use(express.static(path.join(__dirname, "../admin/dist")));
+    app.use(express.static(path.join(__dirname, "admin/dist")));
 
     app.get("/{*any}", (req,res) => {
-        res.sendFile(path.join(__dirname, "../admin", "dist", "index.html"));
+        res.sendFile(path.join(__dirname, "admin", "dist", "index.html"));
     });
 }
     console.log("Working");
