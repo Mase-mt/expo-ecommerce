@@ -11,7 +11,7 @@ app.get("/api/health", (req,res) => {
 });
 
 //make our app ready for deployment
-if(ENV.NODE_ENV === "production"){
+if(ENV.NODE_ENV === "development"){
     app.use(express.static(path.join(__dirname, "../admin/dist")));
 
     app.get("/{*any}", (req,res) => {
