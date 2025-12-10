@@ -19,7 +19,7 @@ if(ENV.NODE_ENV === "development"){
     })
 }
 
-app.listen(ENV.PORT, () => console.log("Server is running on port 3000! woow"));
+// app.listen(ENV.PORT, () => console.log("Server is running on port 3000! woow"));
 
 export default app;
 
@@ -47,6 +47,24 @@ export default app;
 //     {
 //       "source": "/(.*)",
 //       "destination": "/admin/dist/index.html"
+//     }
+//   ]
+// }
+
+
+//working Backend
+// {
+//   "version": 2,
+//   "builds": [
+//     {
+//       "src": "backend/src/server.js", 
+//       "use": "@vercel/node"
+//     }
+//   ],
+//   "rewrites": [
+//     {
+//       "source": "/api/(.*)",
+//       "destination": "/backend/src/server.js" 
 //     }
 //   ]
 // }
