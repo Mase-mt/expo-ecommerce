@@ -2,26 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/src/server.js", 
+      "src": "backend/server.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "admin/package.json",
-      "use": "@vercel/static-build",
-      "config": { 
-        "buildCommand": "vite build",
-        "distDir": "dist" 
-      }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/backend/src/server.js" 
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/admin/dist/index.html"
+      "src": "/(.*)",
+      "dest": "backend/src/server.js"
     }
-  ]
+  ],
+  "buildCommand": "npm install --prefix backend && npm install --prefix admin && npm run build --prefix admin"
 }
