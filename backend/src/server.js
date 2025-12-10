@@ -16,9 +16,9 @@ if(ENV.NODE_ENV === "development"){
 
     app.get("/{*any}", (req,res) => {
         res.sendFile(path.join(__dirname, "../admin", "dist", "index.html"));
-    })
+    });
 }
-
+    console.log("Working perfectly");
 // app.listen(ENV.PORT, () => console.log("Server is running on port 3000! woow"));
 
 export default app;
