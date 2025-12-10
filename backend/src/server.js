@@ -21,7 +21,7 @@ if(ENV.NODE_ENV === "development"){
     console.log("Working");
 app.listen(ENV.PORT, () => console.log("Server is running on port 3000!"));
 
-
+export default app;
 // {
 //   "version": 2,
 //   "builds": [
