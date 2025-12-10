@@ -22,3 +22,31 @@ if(ENV.NODE_ENV === "development"){
 app.listen(ENV.PORT, () => console.log("Server is running on port 3000! woow"));
 
 export default app;
+
+// {
+//   "version": 2,
+//   "builds": [
+//     {
+//       "src": "backend/src/server.js", 
+//       "use": "@vercel/node"
+//     },
+//     {
+//       "src": "admin/package.json",
+//       "use": "@vercel/static-build",
+//       "config": { 
+//         "buildCommand": "vite build",
+//         "distDir": "dist" 
+//       }
+//     }
+//   ],
+//   "rewrites": [
+//     {
+//       "source": "/api/(.*)",
+//       "destination": "/backend/src/server.js" 
+//     },
+//     {
+//       "source": "/(.*)",
+//       "destination": "/admin/dist/index.html"
+//     }
+//   ]
+// }
