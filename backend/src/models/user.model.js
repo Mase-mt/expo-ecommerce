@@ -1,0 +1,64 @@
+import mongoose from 'mongoose';
+
+const addressSchema = new mongoose.Schema({
+    label:{
+        type:String,
+        required: true
+    },
+    fullName:{
+        type:String,
+        required: true
+    },
+    streetAddress:{
+        type:String,
+        required: true
+    },
+    city:{
+        type:String,
+        required: true
+    },
+    state:{
+        type:String,
+        required: true
+    },
+    zipCode:{
+        type:String,
+        required: true
+    },
+    phoneNumber:{
+        type:String,
+        required: true
+    },
+    isDefault:{
+        type: Boolean,
+        isDefault: false
+    }
+})
+
+const userSchema = new mongoose.Schema({
+    email:{
+        type: String,
+        unique: true,
+        required: true
+    },
+    name:{
+        type: String,
+        required: true
+    },
+    imageUrl:{
+        type:String,
+        default:""
+    },
+    clerkId:{
+        type: String,
+        unique: true,
+        required: true
+    },
+    address:[addressSchema],
+    wishList:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Products"
+    }]
+},{timestamps:true});
+
+export const User = mongoose.model("User", userSchema);
