@@ -13,7 +13,7 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(clerkMiddleware()); //adds auth object to req
-app.use("/api/inggest", serve({client:inngest, functions}));
+app.use("/api/inggest", serve({client:inngest, functions: functions}));
 app.get("/api/health", (req,res) => {
     res.status(200).json({message:"Success"});
 });
