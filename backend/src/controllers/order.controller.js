@@ -47,12 +47,16 @@ export async function getUserOrders(req,res){
         const orders = await Order.find({clerkId: req.user.clerkId}).populate("orderItems.product").sort({createdAt:-1});
         
         //check if order has been reviewed
+        const orderIds = orders.map((order)=> order._id);
+        const reviews = await Review.find({orderId: {$in: orderIds}});
+        const reviewedOrderIds = new Set(reviews.map((review)=>review.orderId.toString())); 
+
         const ordersWithReviewStatus = await Promise.all(
             orders.map(async (order) => {
                 const review = await Review.findOne({orderId: order._id});
                 return {
                     ...review.toObject(),
-                    hasReviewed: !!review //double bang operator --if there is no value, it'll return value to flase, if there is value, it'll return true
+                    hasReviewed: reviewedOrderIds.has(order._id.toString()), //double bang operator --if there is no value, it'll return value to flase, if there is value, it'll return true
                 }
             })
         );
