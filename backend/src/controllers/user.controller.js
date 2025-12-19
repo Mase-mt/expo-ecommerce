@@ -125,7 +125,7 @@ export async function getWishlist(req,res) {
     try {
         //we're using populate because wishlist is just an array of product id's
         const user = await User.findById(req.user._id).populate("wishList");
-            res.status(200).json({message:"Successfuly fetched product from wishlist",wishList: user.wishList})
+        res.status(200).json({message:"Successfuly fetched product from wishlist",wishList: user.wishList})
     } catch (error) {
         console.error("Error fetching product from wishlist!");
         res.status(500).json({error:"Internal server error!"});
