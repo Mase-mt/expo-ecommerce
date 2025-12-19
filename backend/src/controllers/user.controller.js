@@ -124,7 +124,7 @@ export async function removeFromWishlist(req,res) {
 export async function getWishlist(req,res) {
     try {
         //we're using populate because wishlist is just an array of product id's
-        const user = await User.findById(req.user._id).populate("whishlist");
+        const user = await User.findById(req.user._id).populate("wishlist");
             res.status(200).json({message:"Successfuly fetched product from wishlist",wishlist: user.wishlist})
     } catch (error) {
         console.error("Error fetching product from wishlist!");
