@@ -8,7 +8,7 @@ import {serve} from "inngest/express";
 import { functions, inngest } from "./config/inngest.js";
 
 import adminRoutes from "./routes/admin.route.js";
-
+import userRoutes from "./routes/user.route.js";
 const app = express();
 
 const __dirname = path.resolve();
@@ -16,7 +16,8 @@ const __dirname = path.resolve();
 app.use(express.json());
 app.use(clerkMiddleware()); //adds auth object to req
 app.use("/api/inggest", serve({client:inngest, functions}));
-app.use("/api/admin", adminRoutes)
+app.use("/api/admin", adminRoutes);
+app.use("/api/user", userRoutes)
 app.get("/api/health", (req,res) => {
     res.status(200).json({message:"Success"});
 });
