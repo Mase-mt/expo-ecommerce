@@ -2,8 +2,13 @@ import { User } from "../models/user.model.js";
 
 export async function addAddress(req,res) {
     try {
-        const {label, fullName, streetAddress, state, zipCode, phoneNumber, isDefault} = req.body;
+        const {label, fullName, streetAddress, city, state, zipCode, phoneNumber, isDefault} = req.body;
         const user = req.user;
+
+        if(!fullName || !streetAddress || !state || !city || !zipCode || !phoneNumber){
+            return res.status(400).json({error:"Missing required fields!"})
+        }
+
         //if this is set as default, unset all others defaults
         if(isDefault){
             user.addresses.forEach((addr) => {
@@ -17,6 +22,7 @@ export async function addAddress(req,res) {
             streetAddress,
             state,
             zipCode,
+            city,
             phoneNumber,
             isDefault: isDefault || false,
         });
@@ -105,10 +111,11 @@ export async function removeFromWishlist(req,res) {
         const user = req.user;
         const {productId} = req.params;
         if(!user.wishlist.includes(productId)){
-            return res.status(400).json({error:"Product is not even in wishlist!"});
+            return res.status(400).json({error:"Product not found in wishlist!"});
         }
         user.wishlist.pull(productId);
-        res.status(200).json({message:"Successfuly reoved product from wishlist!",wishlist:user.wishlist})
+        await user.save();
+        res.status(200).json({message:"Successfuly removed product from wishlist!",wishlist:user.wishlist})
     } catch (error) {
         console.error("Error on removing product from wishlist!");
         res.status(500).json({error:"Internal server error!"})
@@ -116,10 +123,9 @@ export async function removeFromWishlist(req,res) {
 }
 export async function getWishlist(req,res) {
     try {
-        const user = req.user;
-        if(user.wishlist.length > 0){
+        //we're using populate because wishlist is just an array of product id's
+        const user = await User.findById(req.user._id).populate("whishlist");
             res.status(200).json({message:"Successfuly fetched product from wishlist",wishlist: user.wishlist})
-        }
     } catch (error) {
         console.error("Error fetching product from wishlist!");
         res.status(500).json({error:"Internal server error!"});
