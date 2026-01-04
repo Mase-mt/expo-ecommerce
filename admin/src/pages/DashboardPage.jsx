@@ -15,6 +15,7 @@ const DashboardPage = () => {
   console.log("Stats data", statsData)
   // It would be better to send the last 5 items from the backend instead of slicing it here, but we're kepping it simple here.
   const recentOrders = ordersData?.orders?.slice(0, 5) ?? [];
+  console.log("recentOrders",recentOrders);
   const statsCard = [
     {name:"Total Revenue",
      value: statsLoading ? "...": `$${statsData?.totalRevenue?.toFixed(2) || 0}`,
