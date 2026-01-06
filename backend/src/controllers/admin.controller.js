@@ -163,3 +163,13 @@ export async function getDasboardStats(req,res){
        res.status(500).json({error:"Internal server error"}) ;
     } 
 }
+export const deleteProduct = async(req,res) =>{
+    try {
+        const { id } = req.params;
+        await Product.findByIdAndDelete(id);
+        res.status(200).json({message:"Product deleted successfully."})
+    } catch (error) {
+        console.error("Error deleting product:",error);
+        res.status(500).json({error:"Faild to delete product, Internal server error"});
+    }
+}
