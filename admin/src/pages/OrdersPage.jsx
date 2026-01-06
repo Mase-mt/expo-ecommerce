@@ -22,7 +22,7 @@ const OrderPage = () => {
   }
 
 
-  const orders = ordersData.orders || [];
+  const orders = ordersData?.orders || [];
   console.log(ordersData);
   return (
     <div className="space-y-6">
@@ -59,7 +59,7 @@ const OrderPage = () => {
                 <tbody>
                   {orders.map( order =>{
                     const totalQuantity = order.orderItems.reduce(
-                      (sum,item) => sum + item, 0
+                      (sum,item) => sum + item.quantity, 0
                     );
                     return (
                       <tr key={order._id}>
