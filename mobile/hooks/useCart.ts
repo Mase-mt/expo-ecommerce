@@ -6,6 +6,7 @@ import { Cart } from "@/types"
 const useCart = () => {
     const api = useApi();
     const queryClient = useQueryClient();
+    
 
     const addToCartMutation = useMutation({
       mutationFn: async ({ productId, quantity = 1 }: { productId: string; quantity?: number }) => {
