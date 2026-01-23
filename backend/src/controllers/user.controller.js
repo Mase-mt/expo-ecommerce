@@ -94,7 +94,8 @@ export async function addToWishlist(req,res) {
         const user = req.user;
         
         // check if the product is already in the wishlist
-        productId = user.wishlist.id(productId);
+        // productId = user.wishlist.id(productId);
+        
         if(user.wishlist.includes(productId)){
             return res.status(400).json({error:"Product is already in wishlist!"});
         }
