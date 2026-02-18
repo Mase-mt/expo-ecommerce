@@ -25,7 +25,6 @@ export const useApi = () => {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-      console.log(` [API REQUEST] ${config.method?.toUpperCase()} ${config.url}`);
       return config;
     });
 
