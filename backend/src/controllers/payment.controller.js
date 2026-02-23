@@ -57,7 +57,7 @@ export async function createPaymentIntent(req, res) {
     //find or create stripe customer
     let customer;
     if (user.stripeCustomerId) {
-      //find the custoemr
+      //find the customer
       customer = await stripe.customers.retrieve(user.stripeCustomerId);
     } else {
       //create the customer
@@ -112,8 +112,8 @@ export async function handleWebhook(req, res) {
     return res.status(400).send(`Webhook Error: ${error.message}`);
   }
   if (event.type === "payment_intent.succeeded") {
-    const payment_intent = event.data.object;
-    console.log("Payment Succeeded:", payment_intent.id);
+    const paymentIntent = event.data.object;
+    console.log("Payment Succeeded:", paymentIntent.id);
     try {
       const { userId, clerkId, orderItems, shippingAddress, totalPrice } =
         paymentIntent.metadata;
@@ -126,13 +126,13 @@ export async function handleWebhook(req, res) {
         return res.json({ received: true });
       }
 
-      //create new order
+      // create order
       const order = await Order.create({
-        clerkId: user.clerkId,
-        userId: user._id.toString(),
-        orderItems: JSON.stringify(validatedItems),
-        shippingAddress: JSON.stringify(shippingAddress),
-        payementResult: {
+        user: userId,
+        clerkId,
+        orderItems: JSON.parse(orderItems),
+        shippingAddress: JSON.parse(shippingAddress),
+        paymentResult: {
           id: paymentIntent.id,
           status: "succeeded",
         },
