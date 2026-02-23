@@ -1,96 +1,93 @@
 import mongoose from "mongoose";
 
 const orderItemsSchema = new mongoose.Schema({
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: 1,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
+    product:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Product",
+        required: true
+    },
+    name:{
+        type: String,
+        required: true
+    },
+    price:{
+        type: Number,
+        required: true,
+        min:0
+    },
+    quantity:{
+        type: Number,
+        required: true,
+        min:1
+    },
+    image:{
+        type: String,
+        required: true
+    }
 });
 
 const shippingAddressSchema = new mongoose.Schema({
-  fullName: {
-    type: String,
-    required: true,
-  },
-  streetAddress: {
-    type: String,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-  zipCode: {
-    type: String,
-    required: true,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-  },
-});
+     fullName:{
+        type:String,
+        required: true
+    },
+    streetAddress:{
+        type:String,
+        required: true
+    },
+    city:{
+        type:String,
+        required: true
+    },
+    state:{
+        type:String,
+        required: true
+    },
+    zipCode:{
+        type:String,
+        required: true
+    },
+    phoneNumber:{
+        type:String,
+        required: true
+    },
+})
 
-const OrderSchema = new mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+const OrderSchema = new mongoose.Schema({
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required: true
     },
-    clerkId: {
-      type: String,
-      required: true,
+    clerkId:{
+        type: String,
+        required: true
     },
-    orderItems: [orderItemsSchema],
-    shippingAddress: {
-      type: shippingAddressSchema,
-      required: true,
+    orderItems:[orderItemsSchema],
+    shippingAddress:{
+        type: shippingAddressSchema,
+        required: true
     },
-    paymentResult: {
-      type: String,
-      status: String,
+    payementResult:{
+        type: String,
+        status: String,
     },
-    totalPrice: {
-      type: Number,
-      required: true,
-      min: 0,
+    totalPrice:{
+        type: Number,
+        required: true,
+        min:0,
     },
-    status: {
-      type: String,
-      enum: ["pending", "shipped", "delivered"],
-      default: "pending",
+    status:{
+        type: String,
+        enum: ["pending", "shipped", "delivered"],
+        default:"pending"
     },
-    deliveredAt: {
-      type: Date,
+    deliveredAt:{
+        type: Date
     },
-    shippedAt: {
-      type: Date,
-    },
-  },
-  { timestamps: true },
-);
+    shippedAt:{
+        type: Date
+    }
+}, {timestamps: true});
 
 export const Order = mongoose.model("Order", OrderSchema);
