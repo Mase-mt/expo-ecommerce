@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { capitalizeFirstLetter, formatDate, getStatusColor } from "@/lib/utils";
+import RatingModal from "@/components/RatingModal";
 
 const OrdersScreen = () => {
   const { data: orders, isLoading, isError } = useOrders();
@@ -60,6 +61,15 @@ const OrdersScreen = () => {
         }),
       );
 
+      console.log(
+        "Submitting Ratings:",
+        selectedOrder.orderItems.map((item) => ({
+          productId: item.product._id,
+          orderId: selectedOrder._id,
+          rating: productRatings[item.product._id],
+        })),
+      );
+
       Alert.alert("Success", "Thankyou for rating all products");
       setShowRatingModal(false);
       setSelectedOrder(null);
@@ -69,6 +79,12 @@ const OrdersScreen = () => {
         "Error",
         error?.response?.data.error || "Failed to submit rating",
       );
+      console.log("BACKEND REJECTED REQUEST:", error.response?.data);
+
+      // Display the specific message from the server
+      const serverMessage =
+        error.response?.data?.message || error.response?.data?.error;
+      Alert.alert("Error", serverMessage || "Failed to submit rating");
     }
   };
   return (
@@ -198,6 +214,17 @@ const OrdersScreen = () => {
           </View>
         </ScrollView>
       )}
+      <RatingModal
+        visible={showRatingModal}
+        onClose={() => setShowRatingModal(false)}
+        order={selectedOrder}
+        productRatings={productRatings}
+        onSubmit={handleSubmitRating}
+        isSubmitting={isCreatingReview}
+        onRatingChange={(productId, rating) =>
+          setProductRatings((prev) => ({ ...prev, [productId]: rating }))
+        }
+      />
     </SafeScreen>
   );
 };
