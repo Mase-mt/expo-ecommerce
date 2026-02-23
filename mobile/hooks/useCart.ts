@@ -2,7 +2,6 @@ import { useApi } from "@/lib/api";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { Cart } from "@/types";
 
-//todo: complete this hook later
 const useCart = () => {
   const api = useApi();
   const queryClient = useQueryClient();
