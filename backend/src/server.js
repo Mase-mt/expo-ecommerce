@@ -2,9 +2,9 @@ import express from "express";
 import path from "path";
 import { ENV } from "./config/env.js"; //index.js
 import { connectDB } from "./config/db.js";
-import { clerkMiddleware } from '@clerk/express';
+import { clerkMiddleware } from "@clerk/express";
 
-import {serve} from "inngest/express";
+import { serve } from "inngest/express";
 import { functions, inngest } from "./config/inngest.js";
 
 import cors from "cors";
@@ -19,30 +19,40 @@ import paymentRoutes from "./routes/payment.route.js";
 const app = express();
 
 const __dirname = path.resolve();
+app.use(
+  "/api/payment",
+  (req, res, next) => {
+    if (req.originalUrl === "/api/payment/webhook") {
+      express.raw({ type: "application/json" })(req, res, next);
+    } else {
+      express.json()(req, res, next); // parse json for non-webhook routes
+    }
+  },
+  paymentRoutes,
+);
 
 app.use(express.json());
 app.use(clerkMiddleware()); //adds auth object to req
-app.use(cors({origin:ENV.CLIENT_URL, credentials:true})); //credentials: true allows the browser to send the cookies to server with request
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true })); //credentials: true allows the browser to send the cookies to server with request
 
-app.use("/api/inggest", serve({client:inngest, functions}));
+app.use("/api/inggest", serve({ client: inngest, functions }));
 app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
-app.use("/api/payment", paymentRoutes);
-app.get("/api/health", (req,res) => {
-    res.status(200).json({message:"Success"});
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ message: "Success" });
 });
 
 //make our app ready for deployment
-if(ENV.NODE_ENV === "development"){
-    app.use(express.static(path.join(__dirname, "admin/dist")));
+if (ENV.NODE_ENV === "development") {
+  app.use(express.static(path.join(__dirname, "admin/dist")));
 
-    app.get("/{*any}", (req,res) => {
-        res.sendFile(path.join(__dirname, "admin", "dist", "index.html"));
-    });
+  app.get("/{*any}", (req, res) => {
+    res.sendFile(path.join(__dirname, "admin", "dist", "index.html"));
+  });
 }
 app.listen(ENV.PORT, () => console.log("Server is running on port 3000!"));
 connectDB();

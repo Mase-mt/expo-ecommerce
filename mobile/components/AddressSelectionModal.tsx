@@ -1,13 +1,20 @@
-import { View, Text, Modal, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
-import { Address } from "@/types";
 import { useAddresses } from "@/hooks/useAddresses";
+import { Address } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 
 interface AddressSelectionModalProps {
   visible: boolean;
   onClose: () => void;
-  onProceed: (addressId: string) => void;
+  onProceed: (address: Address) => void;
   isProcessing: boolean;
 }
 
@@ -29,22 +36,27 @@ const AddressSelectionModal = ({
     >
       <View className="flex-1 bg-black/50 justify-end">
         <View className="bg-background rounded-t-3xl h-1/2">
-            {/* Modal Header */}
+          {/* Modal Header */}
           <View className="flex-row items-center justify-between p-6 border-b border-surface">
-            <Text className="text-text-primary text-2xl font-bold">Select Address</Text>
-            <TouchableOpacity onPress={onClose} className="bg-surface rounded-full p-2">
+            <Text className="text-text-primary text-2xl font-bold">
+              Select Address
+            </Text>
+            <TouchableOpacity
+              onPress={onClose}
+              className="bg-surface rounded-full p-2"
+            >
               <Ionicons name="close" size={24} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
 
-          {/* ADDRESSES VIEW */}
+          {/* ADDRESSES LIST */}
           <ScrollView className="flex-1 p-6">
             {addressesLoading ? (
-                <View className="py-6">
-                    <ActivityIndicator size={"large"} color={"#00D9FF"}/>
-                </View>
-            ):(
-                <View className="gap-4">
+              <View className="py-8">
+                <ActivityIndicator size="large" color="#00D9FF" />
+              </View>
+            ) : (
+              <View className="gap-4">
                 {addresses?.map((address: Address) => (
                   <TouchableOpacity
                     key={address._id}
@@ -64,7 +76,9 @@ const AddressSelectionModal = ({
                           </Text>
                           {address.isDefault && (
                             <View className="bg-primary/20 rounded-full px-3 py-1">
-                              <Text className="text-primary text-sm font-semibold">Default</Text>
+                              <Text className="text-primary text-sm font-semibold">
+                                Default
+                              </Text>
                             </View>
                           )}
                         </View>
@@ -77,11 +91,17 @@ const AddressSelectionModal = ({
                         <Text className="text-text-secondary text-base mb-2">
                           {address.city}, {address.state} {address.zipCode}
                         </Text>
-                        <Text className="text-text-secondary text-base">{address.phoneNumber}</Text>
+                        <Text className="text-text-secondary text-base">
+                          {address.phoneNumber}
+                        </Text>
                       </View>
                       {selectedAddress?._id === address._id && (
                         <View className="bg-primary rounded-full p-2 ml-3">
-                          <Ionicons name="checkmark" size={24} color="#121212" />
+                          <Ionicons
+                            name="checkmark"
+                            size={24}
+                            color="#121212"
+                          />
                         </View>
                       )}
                     </View>

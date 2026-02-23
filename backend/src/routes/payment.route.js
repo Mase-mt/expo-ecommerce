@@ -5,5 +5,7 @@ import { createPaymentIntent } from "../controllers/payment.controller.js";
 const router = Router();
 
 router.post("/create-intent", protectRoute, createPaymentIntent);
+//No auth needed, stripe validates via signature
+router.post("/webhook", handleWebhook);
 
 export default router;

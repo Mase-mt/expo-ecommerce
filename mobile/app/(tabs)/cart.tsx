@@ -87,17 +87,20 @@ const CartScreen = () => {
     try {
       setPayementLoading(true);
       //create payement intent with cart items and shipping address
-      const { data } = await api.post("/payment/create-intent", {
-        cartItems,
-        shippingAddress: {
-          fullName: selectedAddress.fullName,
-          streetAddress: selectedAddress.streetAddress,
-          city: selectedAddress.city,
-          state: selectedAddress.state,
-          zipCode: selectedAddress.zipCode,
-          phoneNumber: selectedAddress.phoneNumber,
+      const { data } = await api.post(
+        `/payment/create-intent?t=${Date.now()}`,
+        {
+          cartItems,
+          shippingAddress: {
+            fullName: selectedAddress.fullName,
+            streetAddress: selectedAddress.streetAddress,
+            city: selectedAddress.city,
+            state: selectedAddress.state,
+            zipCode: selectedAddress.zipCode,
+            phoneNumber: selectedAddress.phoneNumber,
+          },
         },
-      });
+      );
 
       const { error: initError } = await initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
@@ -289,7 +292,7 @@ const CartScreen = () => {
       <AddressSelectionModal
         visible={addressModalVisible}
         onClose={() => setAddressModalVisible(false)}
-        onProceed={() => handleProceedWithPayment}
+        onProceed={handleProceedWithPayment}
         isProcessing={payemntLoading}
       />
     </SafeScreen>
